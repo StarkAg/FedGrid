@@ -1,0 +1,20 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Python
+*.py text eol=lf
+*.pyi text eol=lf
+
+# JS/TS/JSON
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+
+# Shell
+*.sh text eol=lf
+
+# Exclude from language stats (GitHub)
+venv export-ignore
+node_modules export-ignore
+.next export-ignore

@@ -1,0 +1,3 @@
+# Hardware mode: place ESP32-uploaded CSVs here.
+# Format: timestamp, demand (one row per hour or per sample interval)
+# Example: client_1.csv, client_2.csv

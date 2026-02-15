@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* American Captain Font */
+@font-face {
+  font-family: 'AmericanCaptain';
+  src: url('/american-captain-font/AmericanCaptain-MdEY.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for Dark Theme (Default) */
+:root[data-theme="dark"],
+:root:not([data-theme]) {
+  --bg-primary: #080808;
+  --bg-secondary: #0a0a0a;
+  --card-bg: rgba(10, 10, 10, 0.7);
+  --card-bg-form: rgba(10, 10, 10, 0.6);
+  --text-primary: #f5f5f5;
+  --text-secondary: rgba(245, 245, 245, 0.5);
+  --text-tertiary: rgba(245, 245, 245, 0.35);
+  --border-color: rgba(245, 245, 245, 0.12);
+  --border-hover: rgba(245, 245, 245, 0.3);
+  --hover-bg: rgba(245, 245, 245, 0.06);
+  --input-bg: rgba(0, 0, 0, 0.6);
+  --stat-bg: rgba(0, 0, 0, 0.4);
+  --error-color: #ff6b6b;
+  --error-bg: rgba(255, 107, 107, 0.08);
+  --error-border: rgba(255, 107, 107, 0.35);
+  --success-color: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.1);
+  --success-border: rgba(74, 222, 128, 0.3);
+  --warning-color: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --warning-border: rgba(251, 191, 36, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.15);
+}
+
+/* CSS Variables for Light Theme */
+:root[data-theme="light"] {
+  --bg-primary: #f8f8f8;
+  --bg-secondary: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-bg-form: rgba(255, 255, 255, 0.8);
+  --text-primary: #1a1a1a;
+  --text-secondary: rgba(26, 26, 26, 0.6);
+  --text-tertiary: rgba(26, 26, 26, 0.4);
+  --border-color: rgba(26, 26, 26, 0.15);
+  --border-hover: rgba(26, 26, 26, 0.3);
+  --hover-bg: rgba(26, 26, 26, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --stat-bg: rgba(245, 245, 245, 0.6);
+  --error-color: #dc2626;
+  --error-bg: rgba(220, 38, 38, 0.1);
+  --error-border: rgba(220, 38, 38, 0.3);
+  --success-color: #16a34a;
+  --success-bg: rgba(22, 163, 74, 0.1);
+  --success-border: rgba(22, 163, 74, 0.3);
+  --warning-color: #d97706;
+  --warning-bg: rgba(217, 119, 6, 0.1);
+  --warning-border: rgba(217, 119, 6, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--text-primary);
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    var(--bg-primary);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-attachment: fixed;
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Light theme grid */
+:root[data-theme="light"] body {
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    var(--bg-primary);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-attachment: fixed;
+}
+
+/* Smooth transitions for status changes */
+.status-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Card styles */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+/* Button styles */
+.btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  background: var(--hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* Badge styles */
+.badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid;
+  transition: all 0.3s ease;
+}
+
+/* Font Utilities */
+.font-american-captain {
+  font-family: 'AmericanCaptain', 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.font-space-grotesk {
+  font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Grid Utilities from GradeX */
+.gradex-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  align-items: start;
+  grid-auto-rows: minmax(200px, auto);
+}
+
+@media (max-width: 1200px) {
+  .gradex-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .gradex-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-bottom: 12px;
+    grid-auto-rows: minmax(100px, auto);
+  }
+}
+
+.gradex-form-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .gradex-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive grid utilities */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid-auto-fit,
+  .grid-auto-fill {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
