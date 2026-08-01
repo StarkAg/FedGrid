@@ -1,0 +1,28 @@
+# FedGrid — Flask API + simulation + FL (same container)
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps for TensorFlow / build (optional; remove if not needed)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Backend, client, model, simulation, config (API needs full tree for PROJECT_ROOT and imports)
+COPY backend   ./backend
+COPY client    ./client
+COPY model     ./model
+COPY simulation ./simulation
+COPY config.py .
+
+# Data dir for state, metrics, num_nodes.txt, FL logs
+RUN mkdir -p /app/data
+
+ENV FLASK_PORT=5001
+ENV FEDGRID_MODE=simulation
+EXPOSE 5001
+
+CMD ["python", "-m", "backend.server"]

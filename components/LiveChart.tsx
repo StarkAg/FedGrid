@@ -1,6 +1,6 @@
 'use client';
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface ChartDataPoint {
   time: string;
@@ -14,182 +14,165 @@ interface LiveChartProps {
   data: ChartDataPoint[];
 }
 
+const seriesColors = {
+  node1: 'var(--signal-color)',
+  node2: 'var(--success-color)',
+  node3: 'var(--warning-color)',
+  current: 'var(--accent-color)',
+};
+
 export default function LiveChart({ data }: LiveChartProps) {
-  // Check if we have multi-meter data
-  const hasMultiMeterData = data.length > 0 && data[0].node1 !== undefined;
+  const hasMultiMeterData = data.some(
+    (point) => point.node1 !== undefined || point.node2 !== undefined || point.node3 !== undefined
+  );
 
   return (
-    <div className="card">
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
-        marginBottom: '24px',
-        flexWrap: 'wrap',
-        gap: '12px'
-      }}>
-        <h2 style={{
-          fontSize: '20px',
-          fontWeight: 700,
-          color: 'var(--text-primary)',
-          margin: 0,
-          letterSpacing: '-0.01em'
-        }}>
-          Live Load Chart
-        </h2>
-        
+    <div className="card" style={{ paddingBottom: '18px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '20px',
+          gap: '14px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ display: 'grid', gap: '6px' }}>
+          <span className="eyebrow">Live Telemetry</span>
+          <h2 className="panel-title" style={{ margin: 0 }}>
+            Node Current Stream
+          </h2>
+        </div>
+
         {hasMultiMeterData && (
-          <div style={{ 
-            display: 'flex', 
-            gap: '16px', 
-            fontSize: '12px', 
-            fontWeight: 600,
-            flexWrap: 'wrap'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ 
-                width: '16px', 
-                height: '3px', 
-                background: '#3b82f6', 
-                borderRadius: '2px' 
-              }} />
-              <span style={{ color: 'var(--text-secondary)' }}>Node 1</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ 
-                width: '16px', 
-                height: '3px', 
-                background: '#10b981', 
-                borderRadius: '2px' 
-              }} />
-              <span style={{ color: 'var(--text-secondary)' }}>Node 2</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ 
-                width: '16px', 
-                height: '3px', 
-                background: '#f59e0b', 
-                borderRadius: '2px' 
-              }} />
-              <span style={{ color: 'var(--text-secondary)' }}>Node 3</span>
-            </div>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+            {[
+              ['Node 1', seriesColors.node1],
+              ['Node 2', seriesColors.node2],
+              ['Node 3', seriesColors.node3],
+            ].map(([label, color]) => (
+              <span
+                key={label}
+                className="badge"
+                style={{
+                  background: 'var(--stat-bg)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                <span
+                  style={{
+                    width: '14px',
+                    height: '3px',
+                    borderRadius: '999px',
+                    background: color,
+                    boxShadow: `0 0 10px ${color}`,
+                  }}
+                />
+                {label}
+              </span>
+            ))}
           </div>
         )}
       </div>
-      
+
       {data.length === 0 ? (
-        <div style={{
-          height: '300px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--text-tertiary)'
-        }}>
-          <p>Waiting for data...</p>
+        <div
+          style={{
+            height: '320px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--text-tertiary)',
+            border: '1px dashed var(--border-color)',
+            borderRadius: '14px',
+            background: 'rgba(6, 12, 22, 0.28)',
+          }}
+        >
+          Waiting for telemetry packets...
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={data}
-            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-          >
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="var(--border-color)"
-              opacity={0.3}
-            />
-            <XAxis 
-              dataKey="time" 
-              stroke="var(--text-secondary)"
-              style={{ fontSize: '11px' }}
-              tick={{ fill: 'var(--text-secondary)' }}
-            />
-            <YAxis 
-              stroke="var(--text-secondary)"
-              domain={[0, 5]}
-              label={{ 
-                value: 'Current (A)', 
-                angle: -90, 
-                position: 'insideLeft',
-                style: { fill: 'var(--text-secondary)', fontSize: '12px' }
-              }}
-              style={{ fontSize: '11px' }}
-              tick={{ fill: 'var(--text-secondary)' }}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: 'var(--card-bg)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '8px',
-                color: 'var(--text-primary)',
-                boxShadow: '0 4px 12px var(--shadow-color)',
-                fontSize: '12px',
-                padding: '8px 12px'
-              }}
-              labelStyle={{ color: 'var(--text-primary)', fontWeight: 600 }}
-              itemStyle={{ color: 'var(--text-primary)' }}
-            />
-            
-            {hasMultiMeterData ? (
-              <>
-                <Line
-                  type="monotone"
-                  dataKey="node1"
-                  name="Node 1"
-                  stroke="#3b82f6"
-                  strokeWidth={2.5}
-                  dot={false}
-                  isAnimationActive={true}
-                  animationDuration={300}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="node2"
-                  name="Node 2"
-                  stroke="#10b981"
-                  strokeWidth={2.5}
-                  dot={false}
-                  isAnimationActive={true}
-                  animationDuration={300}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="node3"
-                  name="Node 3"
-                  stroke="#f59e0b"
-                  strokeWidth={2.5}
-                  dot={false}
-                  isAnimationActive={true}
-                  animationDuration={300}
-                />
-              </>
-            ) : (
-              <Line
-                type="monotone"
-                dataKey="current"
-                name="Current"
-                stroke="#3b82f6"
-                strokeWidth={2.5}
-                dot={{ r: 3, fill: '#3b82f6' }}
-                activeDot={{ r: 5, fill: '#3b82f6' }}
-                isAnimationActive={true}
-                animationDuration={300}
+        <div
+          style={{
+            height: '320px',
+            border: '1px solid rgba(106, 146, 193, 0.14)',
+            borderRadius: '14px',
+            padding: '14px 12px 6px',
+            background: 'rgba(6, 12, 22, 0.45)',
+          }}
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data} margin={{ top: 10, right: 20, left: 4, bottom: 4 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" />
+              <XAxis
+                dataKey="time"
+                stroke="var(--text-tertiary)"
+                tick={{ fill: 'var(--text-tertiary)', fontSize: 11, fontFamily: 'IBM Plex Mono' }}
+                axisLine={{ stroke: 'var(--border-color)' }}
+                tickLine={{ stroke: 'var(--border-color)' }}
               />
-            )}
-          </LineChart>
-        </ResponsiveContainer>
+              <YAxis
+                stroke="var(--text-tertiary)"
+                domain={[0, 5]}
+                tick={{ fill: 'var(--text-tertiary)', fontSize: 11, fontFamily: 'IBM Plex Mono' }}
+                axisLine={{ stroke: 'var(--border-color)' }}
+                tickLine={{ stroke: 'var(--border-color)' }}
+                label={{
+                  value: 'Current (A)',
+                  angle: -90,
+                  position: 'insideLeft',
+                  style: { fill: 'var(--text-secondary)', fontSize: '11px', fontFamily: 'IBM Plex Mono' },
+                }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'rgba(7, 14, 24, 0.96)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  color: 'var(--text-primary)',
+                  boxShadow: '0 18px 36px rgba(0, 0, 0, 0.26)',
+                  fontSize: '12px',
+                  fontFamily: 'IBM Plex Mono',
+                }}
+                labelStyle={{ color: 'var(--text-primary)', fontWeight: 500 }}
+                itemStyle={{ color: 'var(--text-secondary)' }}
+              />
+
+              {hasMultiMeterData ? (
+                <>
+                  <Line type="monotone" dataKey="node1" name="Node 1" stroke={seriesColors.node1} strokeWidth={2.4} dot={false} />
+                  <Line type="monotone" dataKey="node2" name="Node 2" stroke={seriesColors.node2} strokeWidth={2.4} dot={false} />
+                  <Line type="monotone" dataKey="node3" name="Node 3" stroke={seriesColors.node3} strokeWidth={2.4} dot={false} />
+                </>
+              ) : (
+                <Line
+                  type="monotone"
+                  dataKey="current"
+                  name="Current"
+                  stroke={seriesColors.current}
+                  strokeWidth={2.6}
+                  dot={false}
+                  activeDot={{ r: 5, fill: 'var(--accent-color)' }}
+                />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       )}
-      
-      <p style={{
-        fontSize: '11px',
-        color: 'var(--text-tertiary)',
-        marginTop: '16px',
-        textAlign: 'center'
-      }}>
-        {hasMultiMeterData 
-          ? `Showing last ${data.length} readings for 3 meters • Updates every 400ms`
-          : `Showing last ${data.length} readings • Updates every 400ms`
-        }
+
+      <p
+        className="font-mono"
+        style={{
+          fontSize: '11px',
+          color: 'var(--text-tertiary)',
+          marginTop: '14px',
+          textAlign: 'center',
+        }}
+      >
+        {hasMultiMeterData
+          ? `Displaying ${data.length} recent samples across hardware and reserve nodes`
+          : `Displaying ${data.length} recent samples from the active stream`}
       </p>
     </div>
   );

@@ -1,0 +1,3 @@
+# Use project libraries only so LiquidCrystal_I2C (iakop, lcd.init()) is used
+directories:
+  user: .

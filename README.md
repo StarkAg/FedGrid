@@ -8,7 +8,7 @@ FedGrid is a full-stack system: federated LSTM training (Flower + Keras), dual-m
 |-----------------|-------------|
 | **FL server**   | Flower, FedAvg, port 8085 |
 | **Clients**     | Python, Keras LSTM, local data (CSV or synthetic) |
-| **API**         | Flask, `/api/rounds`, port 5000 |
+| **API**         | Flask, `/api/rounds`, port 5001 |
 | **Dashboard**   | Next.js, Recharts, login, 3-meter view + training table |
 | **Data**        | `timestamp`, `demand` — simulation or hardware (ESP32 batch) |
 
@@ -109,6 +109,8 @@ Access-Control-Allow-Methods: GET
 **Project context:** See **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** for the full Federated Learning–based smart grid demand forecasting description (objectives, architecture, LSTM, FedAvg, datasets). Use it in Cursor so generated code matches the FL design.
 
 **Dual-mode data:** The system supports **simulation** (synthetic or CSV) and **hardware** (ESP32 → CSV batch upload) through a single contract: `timestamp`, `demand`. See **[docs/DUAL_MODE.md](./docs/DUAL_MODE.md)**. Switch via `config.MODE` or `FEDGRID_MODE` env.
+
+**Project planning:** See **[docs/GANTT_CHART.md](./docs/GANTT_CHART.md)** for a project-specific Gantt chart you can reuse in reports, presentations, or GitHub.
 
 **Runbook:** `./scripts/start_all.sh start` starts FL server + 2 clients + Flask API. Dashboard shows "Federated training rounds" from `/api/rounds`. Compare centralized vs federated: `python scripts/compare_centralized_federated.py`. Report outline: **[docs/REPORT.md](./docs/REPORT.md)**.
 

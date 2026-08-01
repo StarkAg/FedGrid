@@ -23,16 +23,17 @@ start_fl_server() {
 }
 
 start_clients() {
-  echo "Starting 2 FL clients..."
+  echo "Starting 3 FL clients..."
   cd "$ROOT"
   source venv/bin/activate 2>/dev/null || true
   nohup python -m client.client --id 1 --server 127.0.0.1:8085 >> client1.log 2>&1 &
   nohup python -m client.client --id 2 --server 127.0.0.1:8085 >> client2.log 2>&1 &
+  nohup python -m client.client --id 3 --server 127.0.0.1:8085 >> client3.log 2>&1 &
   sleep 2
 }
 
 start_api() {
-  echo "Starting Flask API (port 5000)..."
+  echo "Starting Flask API (port 5001)..."
   cd "$ROOT"
   source venv/bin/activate 2>/dev/null || true
   nohup python -m backend.server > api.log 2>&1 &
@@ -47,8 +48,8 @@ case "${1:-start}" in
     start_clients
     start_api
     echo ""
-    echo "FedGrid started. FL server: 8085, API: 5000."
-    echo "Run clients again after each FL run (server runs 5 rounds then exits)."
+    echo "FedGrid started. FL server: 8085, API: 5001."
+    echo "Server runs 20 rounds with 3 clients, then exits."
     echo "Dashboard: npm run dev (or npm start) in another terminal."
     ;;
   stop)

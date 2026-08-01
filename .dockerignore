@@ -1,0 +1,20 @@
+# Dependencies and build outputs
+venv
+node_modules
+.next
+.git
+*.log
+*.pid
+__pycache__
+*.pyc
+.DS_Store
+
+# Optional / docs (keep image smaller)
+docs
+*.md
+!DEPLOYMENT_COMPLETE.md
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore

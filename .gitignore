@@ -45,6 +45,7 @@ next-env.d.ts
 
 # FL runtime state (dashboard reads via API)
 backend/fl_state.json
+backend/metrics_state.json
 fl_server.pid
 api.pid
 *_server.log

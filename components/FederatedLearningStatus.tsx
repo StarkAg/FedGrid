@@ -2,112 +2,67 @@ interface FederatedLearningStatusProps {
   isConnected: boolean;
 }
 
+const blocks = (isConnected: boolean) => [
+  {
+    title: 'Participating Nodes',
+    value: isConnected ? '1 / 3' : '0 / 3',
+    helper: 'One live hardware meter plus reserve clients',
+    accent: 'var(--signal-color)',
+  },
+  {
+    title: 'Aggregation State',
+    value: isConnected ? 'ONLINE' : 'IDLE',
+    helper: isConnected ? 'Ready for a new federated round' : 'Waiting for field telemetry',
+    accent: isConnected ? 'var(--success-color)' : 'var(--text-tertiary)',
+  },
+  {
+    title: 'Data Shared',
+    value: 'WEIGHTS ONLY',
+    helper: 'Household readings remain on the node',
+    accent: 'var(--warning-color)',
+  },
+];
+
 export default function FederatedLearningStatus({ isConnected }: FederatedLearningStatusProps) {
   return (
     <div className="card">
-      <h2 style={{
-        fontSize: '20px',
-        fontWeight: 700,
-        color: 'var(--text-primary)',
-        margin: '0 0 24px 0',
-        letterSpacing: '-0.01em'
-      }}>
-        Federated Learning Status
-      </h2>
-      
+      <div style={{ display: 'grid', gap: '6px', marginBottom: '18px' }}>
+        <span className="eyebrow">Federated Learning</span>
+        <h2 className="panel-title" style={{ margin: 0 }}>
+          Aggregation Status
+        </h2>
+      </div>
+
       <div className="gradex-form-grid">
-        <div style={{
-          borderLeft: '3px solid var(--text-primary)',
-          paddingLeft: '16px'
-        }}>
-          <p style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            fontWeight: 500,
-            margin: 0,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
-            Participating Nodes
-          </p>
-          <p style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: '8px 0 0 0',
-            lineHeight: 1
-          }}>
-            {isConnected ? '1' : '0'} / 3
-          </p>
-        </div>
+        {blocks(isConnected).map((block) => (
+          <div
+            key={block.title}
+            style={{
+              padding: '14px 16px',
+              borderRadius: '14px',
+              border: '1px solid rgba(106, 146, 193, 0.14)',
+              background: 'rgba(6, 12, 22, 0.24)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center' }}>
+              <span className="eyebrow">{block.title}</span>
+              <span
+                className="console-dot"
+                style={{
+                  background: block.accent,
+                  boxShadow: `0 0 12px ${block.accent}`,
+                }}
+              />
+            </div>
 
-        <div style={{
-          borderLeft: '3px solid var(--success-color)',
-          paddingLeft: '16px'
-        }}>
-          <p style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            fontWeight: 500,
-            margin: 0,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
-            Last Aggregation
-          </p>
-          <p style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '8px 0 0 0'
-          }}>
-            {isConnected ? 'Just now' : 'Never'}
-          </p>
-        </div>
-
-        <div style={{
-          borderLeft: '3px solid var(--text-secondary)',
-          paddingLeft: '16px'
-        }}>
-          <p style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            fontWeight: 500,
-            margin: 0,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
-            Data Shared
-          </p>
-          <p style={{
-            fontSize: '13px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '8px 0 4px 0'
-          }}>
-            Model parameters only
-          </p>
-          <p style={{
-            fontSize: '11px',
-            color: 'var(--text-tertiary)',
-            margin: 0
-          }}>
-            Raw Data Shared: <span style={{ 
-              fontWeight: 600, 
-              color: 'var(--error-color)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}>
-              No
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-              </svg>
-            </span>
-          </p>
-        </div>
+            <p className="metric-value" style={{ fontSize: '1.35rem', color: block.accent, margin: '14px 0 8px 0' }}>
+              {block.value}
+            </p>
+            <p style={{ margin: 0, fontSize: '12px', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              {block.helper}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

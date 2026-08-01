@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface HeaderProps {
   isConnected: boolean;
@@ -25,165 +25,152 @@ export default function Header({ isConnected }: HeaderProps) {
   };
 
   return (
-    <header style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      background: 'var(--bg-primary)',
-      borderBottom: '1px solid var(--border-color)',
-      padding: '16px 24px',
-      zIndex: 1000,
-      backdropFilter: 'blur(10px)',
-      boxShadow: '0 2px 8px var(--shadow-color)'
-    }}>
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        display: 'grid',
-        gridTemplateColumns: '1fr auto 1fr',
-        alignItems: 'center',
-        gap: '16px'
-      }}>
-        <div>
-          <h1 style={{
-            fontSize: 'clamp(28px, 5vw, 40px)',
-            fontWeight: 400,
-            color: 'var(--text-primary)',
-            margin: 0,
-            letterSpacing: '0.1em',
-            fontFamily: "'AmericanCaptain', 'Bebas Neue', sans-serif",
-            textTransform: 'uppercase',
-            lineHeight: 1.2
-          }}>
-            Fedgrid
-          </h1>
-        </div>
-        <div style={{
-          textAlign: 'center',
-          gridColumn: '2'
-        }}>
-          <p style={{
-            fontSize: '14px',
-            color: 'var(--text-secondary)',
-            margin: 0,
-            fontWeight: 500
-          }}>
-            Utility / Operator Monitoring View
-          </p>
-        </div>
-        <div style={{
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        background: 'var(--card-bg-form)',
+        borderBottom: '1px solid var(--border-color)',
+        padding: '14px 24px',
+        zIndex: 1000,
+        backdropFilter: 'blur(18px)',
+        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.22)',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '12px',
+          gap: '20px',
           flexWrap: 'wrap',
-          justifyContent: 'flex-end',
-          gridColumn: '3'
-        }}>
-          <span style={{
-            padding: '8px 16px',
-            borderRadius: '8px',
-            fontSize: '12px',
-            fontWeight: 600,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            background: isConnected ? 'var(--success-bg)' : 'var(--stat-bg)',
-            border: `1px solid ${isConnected ? 'var(--success-border)' : 'var(--border-color)'}`,
-            color: isConnected ? 'var(--success-color)' : 'var(--text-secondary)',
-            transition: 'all 0.3s ease'
-          }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: isConnected ? 'var(--success-color)' : 'var(--text-tertiary)',
-              animation: isConnected ? 'pulse 2s infinite' : 'none'
-            }} />
-            {isConnected ? 'Live' : 'Offline'}
-          </span>
-          <span style={{
-            padding: '8px 16px',
-            borderRadius: '8px',
-            fontSize: '12px',
-            fontWeight: 600,
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border-color)',
-            color: 'var(--text-primary)'
-          }}>
-            ESP8266 Access Point
-          </span>
-          <button
-            onClick={toggleTheme}
+        }}
+      >
+        <div style={{ display: 'grid', gap: '8px' }}>
+          <div
             style={{
-              width: '40px',
-              height: '40px',
-              padding: 0,
-              border: '1px solid var(--border-color)',
-              background: 'var(--card-bg)',
-              borderRadius: '10px',
-              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              gap: '12px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <span className="eyebrow">FedGrid Operator Console</span>
+            <span
+              className="badge"
+              style={{
+                background: 'rgba(95, 168, 255, 0.1)',
+                borderColor: 'rgba(95, 168, 255, 0.26)',
+                color: 'var(--accent-strong)',
+              }}
+            >
+              ESP32 + Federated Edge Nodes
+            </span>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '14px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <h1
+              className="font-display"
+              style={{
+                fontSize: 'clamp(26px, 5vw, 40px)',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                margin: 0,
+                lineHeight: 1,
+              }}
+            >
+              FedGrid
+            </h1>
+            <p
+              style={{
+                margin: 0,
+                color: 'var(--text-secondary)',
+                fontSize: '14px',
+                maxWidth: '720px',
+              }}
+            >
+              Privacy-preserving smart-grid demand forecasting with one live hardware node, two support nodes,
+              and round-by-round federated learning telemetry.
+            </p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '10px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <span
+            className="badge"
+            style={{
+              background: isConnected ? 'var(--success-bg)' : 'var(--stat-bg)',
+              borderColor: isConnected ? 'var(--success-border)' : 'var(--border-color)',
+              color: isConnected ? 'var(--success-color)' : 'var(--text-secondary)',
+            }}
+          >
+            <span
+              className="console-dot"
+              style={{
+                background: isConnected ? 'var(--success-color)' : 'var(--text-tertiary)',
+                boxShadow: isConnected ? '0 0 12px rgba(73, 209, 125, 0.38)' : 'none',
+                animation: isConnected ? 'pulse 2s infinite' : 'none',
+              }}
+            />
+            {isConnected ? 'Telemetry Live' : 'Awaiting Telemetry'}
+          </span>
+
+          <span
+            className="badge"
+            style={{
+              background: 'var(--stat-bg)',
+              borderColor: 'var(--border-color)',
               color: 'var(--text-primary)',
-              position: 'relative',
-              overflow: 'hidden'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-hover)';
-              e.currentTarget.style.background = 'var(--hover-bg)';
-              e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)';
-              e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-color)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-color)';
-              e.currentTarget.style.background = 'var(--card-bg)';
-              e.currentTarget.style.transform = 'translateY(0) scale(1)';
-              e.currentTarget.style.boxShadow = 'none';
+          >
+            Local Review Environment
+          </span>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="btn"
+            style={{
+              width: '44px',
+              height: '44px',
+              padding: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {theme === 'dark' ? (
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                style={{
-                  filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.3))'
-                }}
-              >
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="m17.66 17.66 1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="m6.34 17.66-1.41 1.41" />
+                <path d="m19.07 4.93-1.41 1.41" />
               </svg>
             ) : (
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                style={{
-                  filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.2))'
-                }}
-              >
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3c-.02.28-.03.57-.03.86A9 9 0 0 0 21 12.79Z" />
               </svg>
             )}
           </button>

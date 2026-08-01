@@ -2,6 +2,8 @@
 
 Use this structure for your project report or viva slides.
 
+**Full paper (aligned with FedGrid implementation):** [PAPER_FEDGRID_CORRECTED.md](./PAPER_FEDGRID_CORRECTED.md) — use for thesis/journal submission; citations, LSTM, results, and architecture match the codebase.
+
 ---
 
 ## 1. Title
@@ -55,13 +57,18 @@ Use this structure for your project report or viva slides.
 
 ---
 
-## 7. Results (fill with your numbers)
+## 7. Results
 
-- **Centralized:** Train one LSTM on all clients’ data → Test RMSE = ___, MAE = ___.
-- **Federated:** 5 rounds, 2 clients → Final round loss (MSE) = ___, RMSE ≈ ___.
-- **Conclusion:** Federated achieves comparable performance while preserving privacy.
+- **Centralized:** Train one LSTM on all clients’ data → Test MSE = 0.2091, RMSE = 0.4573, MAE = 0.4060 (train: 1142, test: 286 samples).
+- **Federated:** 5 rounds, 2 clients → Final round loss (MSE) ≈ 0.46 → RMSE ≈ 0.68 (from last saved FL run; run FL separately to refresh).
+- **Conclusion:** Federated preserves privacy (no raw data shared); centralized has lower RMSE/MAE on this small setup; federated is comparable for grid-level forecasting and improves with more rounds/clients.
 
-*(Run `python scripts/compare_centralized_federated.py` and paste the summary table.)*
+**Summary table** (from `python scripts/compare_centralized_federated.py`):
+
+|                | Centralized | Federated (last round) |
+|----------------|-------------|-------------------------|
+| RMSE           | 0.4573      | ~0.6790                 |
+| MAE            | 0.4060      | (evaluate global model for exact) |
 
 ---
 
@@ -80,6 +87,28 @@ Use this structure for your project report or viva slides.
 
 ---
 
-## 10. Future work (optional)
+## 10. What can government (or regulator) do with this dashboard?
+
+- **Monitor grid-level demand** — See live aggregate demand, peaks, and load levels (e.g. Low/Medium/High) for oversight and planning. No access to individual households’ raw consumption.
+- **Verify privacy-preserving ML** — The “Federated training rounds” table shows that forecasting is done via FL: only model weights are shared and loss decreases over rounds. Evidence that the system complies with a “no raw data centralization” approach.
+- **Support policy and regulation** — Use the dashboard as proof that utilities/DSOs can improve demand forecasting without collecting or storing per-household usage data, aligning with data minimization and privacy-by-design.
+- **Oversight without re-identification risk** — Gov sees *that* training works and *that* demand is being predicted; they do **not** see who consumed what, when, at which address.
+
+**In short:** Gov gets **grid-level visibility and FL compliance evidence** from the dashboard, without gaining access to citizens’ raw meter data.
+
+---
+
+## 11. Dashboard explained like you're 5
+
+- **The three little boxes (meters)** — Think of 3 houses. Each box shows how much "electricity" that house is using *right now* — like a number that goes up when you turn on the TV and down when you turn it off. We don't send anyone the list of "what you did at 3pm"; we just show "this house is using a little / a lot right now."
+- **The wiggly line (chart)** — It's a picture of how much electricity all the houses together used over the last few minutes. The line goes up when people use more and down when they use less. So you can see "oh, usage went up" without knowing *which* house did it.
+- **The table (Federated training rounds)** — Imagine 3 friends each doing homework at home. They don't send their full notebooks to the teacher — they only send a tiny summary ("I got better at this"). The table is like the teacher's list: Round 1, Round 2, … and each round the "mistake" number gets smaller. So we know learning is happening, but nobody's private stuff (the real data) ever left their house. **The table updates live** (every few seconds): new rows appear as rounds finish; when you start a new FL run, the list resets and fills again for that run.
+- **So what's the dashboard?** — One screen where you can see: (1) how much each "house" is using now, (2) how the total changed over time (the wiggly line), and (3) proof that the computer got smarter at guessing demand without ever looking at anyone's private data (the rounds table).
+
+**One sentence:** The dashboard shows "how much electricity is being used and that our smart guessing got better — without ever sharing who used what."
+
+---
+
+## 12. Future work (optional)
 
 - Differential privacy; secure aggregation; more clients; real ESP32 deployment with batch upload.
